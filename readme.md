@@ -2,6 +2,7 @@ TODO: make a readme
 
 
 
+
 In Between Card Game
 
 This is a card guessing game. The app starts displaying a welcome page. As the user hovers the mouse a dealer will pop up at the side tells you a greeting then asks which table does the player want to play the game? Buttons will show up for option (Red or Green). After the user press the desired option the app then loads the table with the desired color table. The dealer then asks if the player has played the game, two buttons shall show up (Yes or No). If the player clicks Yes, the dealer will say it's greetings then proceeds to load the game. If player clicks No, the butler then introduces the player to the mechanics of the game.
