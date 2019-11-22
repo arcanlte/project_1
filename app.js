@@ -14,7 +14,15 @@ window.onload = function () {
 
     const city = searchedCity.value;
     const response = await axios.get(`${weatherUrl}`)
-    console.log(response)
+    console.log(response.data.cards)
+
+    const firstCard = response.data.cards[0].code
+    const secondCard = response.data.cards[1].code
+    const thirdCard = response.data.cards[2].code
+
+    document.querySelector(".card1").innerHTML = firstCard
+    document.querySelector('.card2').innerHTML = secondCard
+    document.querySelector('.card3').innerHTML = thirdCard
     //initializing the variables for the
 
 
