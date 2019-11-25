@@ -17,6 +17,7 @@ var deck = "https://deckofcardsapi.com/api/deck/new/draw/?count=3";
 const button = document.querySelector('#button')
 
 
+
 window.onload = function () {
 
   button.addEventListener('click', async (evt) => {
@@ -25,7 +26,9 @@ window.onload = function () {
 
     const response = await axios.get(`${deck}`)
 
-    //sat nov23
+    document.querySelector('.card-list').innerHTML = ""
+
+    //sat nov23 converts A J Q K into number values
     let card = [];
 
     const threeCards = response.data.cards;
@@ -50,16 +53,84 @@ window.onload = function () {
 
     }
 
-    console.log(`${card[1]} ${card[0]} ${card[2]}`)
+    console.log(threeCards[2].image)
+    //sunday november 24 pops the last card and insert it into the thirdCard
+    //gets the highest and lowest card then store them in an array
+    const thirdCard = card.pop();
+    const highCard = Math.max(card);
+    const lowCard = Math.min(card);
 
-    document.querySelector(`.card1`).innerHTML = `${card[0]}`
-    document.querySelector('.card2').innerHTML = `${card[1]}`
-    document.querySelector('.card3').innerHTML = `${card[2]}`
+    //----------------------------------------------------------
+
+
+    //----------------------------------------------------------
+
+    //displays card images
+    for (let i = 0; i < 3; i++) {
+
+      const cardContainer = document.createElement('div')
+      cardContainer.className = "card-container"
+
+      const cardImage = document.createElement('img')
+      cardImage.className = "card-image"
+      cardImage.src = threeCards[`${i}`].image
+      cardContainer.appendChild(cardImage)
+
+      document.querySelector('.card-list').appendChild(cardContainer);
+    }
+
+    //resets the button
+    document.querySelector('.footer').innerHTML = ""
+    //YES or NO button
+    const footerButtonY = document.createElement('button')
+    footerButtonY.className = 'button-yes'
+    footerButtonY.innerHTML = 'YES'
+    document.querySelector('.footer').appendChild(footerButtonY)
+
+    const footerButtonN = document.createElement('button')
+    footerButtonN.className = 'button-no'
+    footerButtonN.innerHTML = 'NO'
+    document.querySelector('.footer').appendChild(footerButtonN)
+
+    //checks if third card is in between
+    document.querySelector('.button-yes').addEventListener('click', function () {
+
+      document.querySelector('.footer').innerHTML = ""
+      if (thirdCard < highCard && thirdcCard > lowCard) {
+        console.log('You Win');
+      }
+      else {
+        console.log('You Lose');
+      }
+      console.log(threeCards)
+
+    })
+
+    document.querySelector('.button-no').addEventListener('click', function () {
+
+      document.querySelector('.footer').innerHTML = ""
+
+
+
+    })
+
+
+
+
 
 
 
 
   })
+
+
+
+
+
+
+
+
+
   //turns the table to red
   document.querySelector('#redTable').addEventListener('click', function () {
     document.body.style.backgroundColor = "red"
@@ -69,18 +140,5 @@ window.onload = function () {
   document.querySelector('#greenTable').addEventListener('click', function () {
     document.body.style.backgroundColor = "green"
   })
-
-  //sat nov 23 converts A J Q K into a number
-  const convertIntoNumber = function (rankCard) {
-    switch (rankCard) {
-      case J:
-
-    }
-  }
-
-
-
-
-
 
 }
