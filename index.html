@@ -8,21 +8,31 @@
 </head>
 
 <body>
+  <header>
+    <span class='text1'>In Between Card Game</span>
+    <span class='text2'>Let's Play!</span>
+  </header>
 
-  <form>
-    <input type="text" name="card" value="" placeholder="card" id="city">
-    <input type="button" value="Get Card" id="button">
-  </form>
+
+  <div class="flexContainer">
+    <div class="player-score">100</div>
+    <button class="start">START</button>
+    <div class="dealer-score">100</div>
+  </div>
 
 
-  <button value="Red Table" id="redTable">Red </button>
-  <button value="Green Table" id="greenTable">Green Table</button>
+  <div class="card-container">
+    <input type="text" placeholder="bet amount" id="betAmount" maxlength="4" size="10">
+    <div class="card-list"></div>
+  </div>
 
-  <div class="card-list"></div>
+
+
 
 
   <footer>
-    <div class="footer"></div>
+    <div class='dealer-message'></div>
+    <div class="footer-container"></div>
   </footer>
 
   <script src="app.js" type="text/javascript" charset="utf-8" async defer></script>

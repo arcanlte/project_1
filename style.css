@@ -1,3 +1,9 @@
+body{
+  text-align: center;
+  background-color: green;
+  margin: 0 auto;
+}
+
 div{
   display: flex;
   justify-content: center;
@@ -5,7 +11,123 @@ div{
   margin-top: 50px;
 }
 
-form{
+header{
+  background-color: black;
+  color: white;
+  text-align: center;
+  display: flex;
   justify-content: center;
-  align-content: center;
+  letter-spacing: 5px;
+  padding: 40px 40px;
+  width: 100%;
+  height: 150px;
+}
+
+.text1{
+  color: white;
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  margin-bottom: 20px;
+  background: black;
+  position: relative;
+  animation-name: text;
+  animation-duration:3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out; 
+}
+
+.text2{
+  font-size: 30px;
+  font-weight: 200px;
+}
+
+header,#button{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+footer{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+}
+
+
+footer, form, .dealerMessage{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+input{
+  display: flex;
+  align-content:flex-end;
+  
+}
+
+.flexContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.player-score{
+  margin: 0 150px;
+  font-size: 50px;
+}
+
+.dealer-score{
+  margin: 0 150px;
+  font-size: 50px;
+  
+}
+
+.card-list{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin: 0 10px;
+}
+
+.card-image{  
+  width: 113px;
+  height: 157px;
+  margin: 0 10px;
+}
+
+.card-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-container{
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.dealer-message{
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+@keyframes text {
+  0% {
+    color: black;
+    margin-bottom: -40px
+  }
+  30% {
+    letter-spacing: 10px;
+    margin-bottom: -40px;
+  }
+  85% {
+    margin-bottom: -40px;
+  }
 }
