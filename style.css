@@ -1,6 +1,6 @@
 body{
   text-align: center;
-  background-color: green;
+  background-image: url(image/poker-table-background.jpg);
   margin: 0 auto;
 }
 
@@ -12,7 +12,7 @@ div{
 }
 
 header{
-  background-color: black;
+  background-image: url(image/banner.png);
   color: white;
   text-align: center;
   display: flex;
@@ -20,7 +20,7 @@ header{
   letter-spacing: 5px;
   padding: 40px 40px;
   width: 100%;
-  height: 150px;
+  height: 100px;
 }
 
 .text1{
@@ -29,12 +29,7 @@ header{
   font-weight: 700;
   letter-spacing: 8px;
   margin-bottom: 20px;
-  background: black;
-  position: relative;
-  animation-name: text;
-  animation-duration:3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-out; 
+
 }
 
 .text2{
@@ -52,7 +47,7 @@ header,#button{
 footer{
   display: flex;
   flex-wrap: wrap;
-  background-color: white;
+  background-color:rgba(250, 250, 250, 0.904);
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -70,7 +65,8 @@ footer, form, .dealerMessage{
 input{
   display: flex;
   align-content:flex-end;
-  
+  margin-top: 50px;
+  display: none;
 }
 
 .flexContainer{
@@ -80,14 +76,15 @@ input{
 }
 
 .player-score{
-  margin: 0 150px;
+  margin: 0 200px;
   font-size: 50px;
+  color: white;
 }
 
 .dealer-score{
-  margin: 0 150px;
+  margin: 0 200px;
   font-size: 50px;
-  
+  color: white;
 }
 
 .card-list{
@@ -97,15 +94,20 @@ input{
   margin: 0 10px;
 }
 
+button{
+  cursor: pointer;
+}
+
 .card-image{  
-  width: 113px;
-  height: 157px;
+  width: 170px;
+  height: 238px;
   margin: 0 10px;
 }
 
 .card-container{
   display: flex;
   flex-direction: column;
+  margin-top: -5px;
 }
 
 .footer-container{
@@ -118,16 +120,30 @@ input{
   margin-bottom: 50px;
 }
 
-@keyframes text {
-  0% {
-    color: black;
-    margin-bottom: -40px
-  }
-  30% {
-    letter-spacing: 10px;
-    margin-bottom: -40px;
-  }
-  85% {
-    margin-bottom: -40px;
-  }
+
+.start{
+  border-radius: 100px;
+  background-color: rgb(216, 50, 9);
+  color: black;
+  padding: 15px 20px;
+  text-align: center;
+  text-decoration: black;
+  display: inline-block;
+  font-size: 32px;
+  margin-top: 20px;
+  cursor: pointer;
 }
+
+.coin{
+  position: relative;
+  margin-top: 40px;
+  animation-name: jump;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes jump {
+  100%{
+    transform: perspective(400px) rotateY(360deg) rotateZ(180deg) rotateX(1440deg);
+  }
+  }

@@ -1,28 +1,3 @@
-/*
-
-BACKUP!!!!
-
-
-11/25/19
-GOAL this Monday
-- Please make the game work :(
-
-Updates
--November 23 Saturday 12:20pm I am able to convert A, J, Q, K into numbers 1, 11, 12, 13 
--Card image loads
--yes and no button is placed
--bet amount is functional
--coins updated(still have minor bugs)
-
-Issues
--create a separate function in creating the card images inorder separate it from async()
--coin malfunctions after it resets (prev coins stacks with 100)
--Should you use API for Dealer character, deck card and back card image?
--Incorporate the No button
--Game does not end when coin reaches 0
--coin returns NaN if form is empty
-*/
-
 const API_KEY = '3c829b1e515273dfb0f400fdcb4aa308';
 var deck = "https://deckofcardsapi.com/api/deck/new/draw/?count=3";
 
@@ -48,7 +23,7 @@ window.onload = function () {
 
   let dealerSay = function (saySomething) {//dealer speaks
     // dealerSay.innerHTML = ""
-    dealerMessage.innerHTML = `<h2>${saySomething}</h2>`;
+    dealerMessage.innerHTML = `<h3>${saySomething}</h3>`;
     return
   }
 
@@ -56,7 +31,7 @@ window.onload = function () {
 
   const buttonYes = function () {                                 //button yes function
     selectFooter.innerHTML = ""
-    console.log(betValue.value)
+    console.log('this is the folded card ' + thirdCard)
     if (betValue.value) {
       if (thirdCard < highCard && thirdCard > lowCard) {
         let playerScore = parseInt(playerCoins.innerHTML)
@@ -102,11 +77,30 @@ window.onload = function () {
       document.querySelector('.button-no').addEventListener('click', loadCard)
     }
 
-
   }
 
 
-  let gameStop = function () { dealerSay('<h1>Thanks for Playing</h1>') }              //game stops
+  let newGame = function () {
+    playerCoins.innerHTML = 100
+    dealerCoins.innerHTML = 100
+    loadCard()
+  }
+
+
+  let gameOver = function () {//checks if the game is over
+    if (parseInt(dealerCoins.innerHTML) <= 0) {
+      dealerSay("<h1>YOU WIN</h1>")
+      endingButtons()
+    }
+    else if (parseInt(playerCoins.innerHTML) <= 0) {
+      selectFooter.innerHTML = ""
+      console.log('YOU LOSE')
+      dealerSay("<h1>YOU LOSE</h1>")
+      endingButtons()
+    }
+  }
+
+  //game stops
 
   let endingButtons = function () {//ending game buttons
     selectFooter.innerHTML = ""
@@ -116,13 +110,20 @@ window.onload = function () {
     playAgain.className = "play-again"
     playAgain.innerHTML = "Play Again"
     selectFooter.appendChild(playAgain)
-    document.querySelector('.play-again').addEventListener('click', loadCard)
+    document.querySelector('.play-again').addEventListener('click', newGame)
 
     let gameEnd = document.createElement('button')
     gameEnd.className = 'end-game'
     gameEnd.innerHTML = 'End Game'
     selectFooter.appendChild(gameEnd)
-    document.querySelector('.end-game').addEventListener('click', gameStop)
+    document.querySelector('.end-game').addEventListener('click', function () {
+
+      document.querySelector('.card-list').remove();
+      playerCoins.innerHTML = 100
+      dealerCoins.innerHTML = 100
+      document.querySelector('.coin').display.style = 'block'
+    })
+
 
   }
 
@@ -131,7 +132,7 @@ window.onload = function () {
     if (betValue.value) {
       if (event.target.innerHTML === 'High') {
         console.log('You picked High')
-        if (highCard < thirdCard) {
+        if (highCard > thirdCard) {
           let playerScore = parseInt(playerCoins.innerHTML)
           let dealerScore = parseInt(dealerCoins.innerHTML)
           playerScore += parseInt(betValue.value)
@@ -170,7 +171,7 @@ window.onload = function () {
       }
 
       else if (event.target.innerHTML === 'Low') {
-        if (highCard > thirdCard) {
+        if (highCard < thirdCard) {
           console.log('You chose low')
           let playerScore = parseInt(playerCoins.innerHTML)
           let dealerScore = parseInt(dealerCoins.innerHTML)
@@ -236,30 +237,8 @@ window.onload = function () {
     document.querySelector('.low-high').addEventListener('click', checkHL)
   }
 
-  let betOptions = function () {
-    let playerScore = parseInt(playerCoins.innerHTML)
-    let betButton = document.createElement('button')
-    betButton.className = 'bet-option'
-    betButton.innerHTML = 20
-    selectFooter.appendChild(betButton)
-
-    let betButton1 = document.createElement('button')
-    betButton1.className = 'bet-option'
-    betButton1.innerHTML = 50
-    selectFooter.appendChild(betButton1)
-
-    let betButton2 = document.createElement('button')
-    betButton2.className = 'bet-option'
-    betButton2.innerHTML = playerScore
-    selectFooter.appendChild(betButton2)
-  }
-
-  dealerSay("<h1>Hey let us play!!!</h1>")
-
-
+  dealerSay("<h3>Hey let us play!!!</h3>")
   button.addEventListener('click', loadCard)
-
-
 
 
   let unfold = function () {//unfolds the card
@@ -294,18 +273,6 @@ window.onload = function () {
     selectFooter.appendChild(footerButtonN)
   }
 
-  let gameOver = function () {//checks if the game is over
-    if (parseInt(dealerCoins.innerHTML) <= 0) {
-      dealerSay("<h1>YOU WIN</h1>")
-      endingButtons()
-    }
-    else if (parseInt(playerCoins.innerHTML) <= 0) {
-      selectFooter.innerHTML = ""
-      console.log('YOU LOSE')
-      dealerSay("<h1>YOU LOSE</h1>")
-      endingButtons()
-    }
-  }
 
 
   async function loadCard() {//loads the cards and resets the game
@@ -313,6 +280,7 @@ window.onload = function () {
     event.preventDefault();
 
     const response = await axios.get(`${deck}`)
+
 
     console.log(response)
 
@@ -347,6 +315,8 @@ window.onload = function () {
 
     }
     console.log(card)
+
+
     //sunday november 24 pops the last card and insert it into the thirdCard
     //gets the highest and lowest card then store them in an array
     thirdCard = card.pop();
@@ -378,6 +348,10 @@ window.onload = function () {
     cardContainer.appendChild(cardImage)
 
     document.querySelector('.card-list').appendChild(cardContainer);
+
+
+    betValue.style.display = 'block'
+    document.querySelector('.coin').style.display = 'none'
 
 
 
