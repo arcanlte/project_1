@@ -12,7 +12,7 @@ let lowCard = 0;
 
 window.onload = function () {
 
-  const button = document.querySelector('.start')
+  let button = document.querySelector('.start')
   const betValue = document.querySelector('#betAmount')
   const playerCoins = document.querySelector('.player-score')
   const dealerCoins = document.querySelector('.dealer-score')
@@ -83,7 +83,18 @@ window.onload = function () {
   let newGame = function () {
     playerCoins.innerHTML = 100
     dealerCoins.innerHTML = 100
-    loadCard()
+
+    document.querySelector('.start').style = "visibility: none"
+    document.querySelector('.coin').style = "display: visible"
+
+
+    console.log('hello')
+    document.querySelector('.card-list').innerHTML = ""
+    selectFooter.innerHTML = ""
+
+    document.querySelector('.hidden').style = "display: none"
+    dealerSay('<h2>Let us play!</h2>')
+
   }
 
 
@@ -103,36 +114,23 @@ window.onload = function () {
   //game stops
 
   let endingButtons = function () {//ending game buttons
-    selectFooter.innerHTML = ""
     console.log('YOU WIN!!!')
 
     let playAgain = document.createElement('button')
     playAgain.className = "play-again"
-    playAgain.innerHTML = "Play Again"
+    playAgain.innerHTML = "Main Menu"
     selectFooter.appendChild(playAgain)
     document.querySelector('.play-again').addEventListener('click', newGame)
 
-    let gameEnd = document.createElement('button')
-    gameEnd.className = 'end-game'
-    gameEnd.innerHTML = 'End Game'
-    selectFooter.appendChild(gameEnd)
-    document.querySelector('.end-game').addEventListener('click', function () {
-
-      document.querySelector('.card-list').remove();
-      playerCoins.innerHTML = 100
-      dealerCoins.innerHTML = 100
-      document.querySelector('.coin').display.style = 'block'
-    })
-
-
+    document.querySelector('.next-card').innerHTML = ""
   }
 
 
   let checkHL = function () {                                                           //check if high or low
     if (betValue.value) {
       if (event.target.innerHTML === 'High') {
-        console.log('You picked High')
-        if (highCard > thirdCard) {
+        console.log(`first card is ${highCard} second is ${lowCard} third card is ${thirdCard}`)
+        if (highCard < thirdCard) {
           let playerScore = parseInt(playerCoins.innerHTML)
           let dealerScore = parseInt(dealerCoins.innerHTML)
           playerScore += parseInt(betValue.value)
@@ -150,7 +148,7 @@ window.onload = function () {
 
           document.querySelector('.next-card').addEventListener('click', loadCard)
         }
-        else {
+        else if (highCard > thirdCard) {
           let playerScore = parseInt(playerCoins.innerHTML)
           let dealerScore = parseInt(dealerCoins.innerHTML)
           playerScore -= parseInt(betValue.value)
@@ -171,7 +169,7 @@ window.onload = function () {
       }
 
       else if (event.target.innerHTML === 'Low') {
-        if (highCard < thirdCard) {
+        if (highCard > thirdCard) {
           console.log('You chose low')
           let playerScore = parseInt(playerCoins.innerHTML)
           let dealerScore = parseInt(dealerCoins.innerHTML)
@@ -287,7 +285,7 @@ window.onload = function () {
     document.querySelector('.card-list').innerHTML = ""
     selectFooter.innerHTML = ""
     dealerMessage.innerHTML = ""
-
+    document.querySelector('.coin').style.display = 'none'
     button.style.visibility = "hidden";
 
     //sat nov23 converts A J Q K into number values
@@ -351,7 +349,6 @@ window.onload = function () {
 
 
     betValue.style.display = 'block'
-    document.querySelector('.coin').style.display = 'none'
 
 
 

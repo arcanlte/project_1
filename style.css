@@ -1,6 +1,6 @@
 body{
   text-align: center;
-  background-image: url(image/poker-table-background.jpg);
+  background: radial-gradient(rgb(91, 180, 101),#233329);
   margin: 0 auto;
 }
 
@@ -12,7 +12,7 @@ div{
 }
 
 header{
-  background-image: url(image/banner.png);
+  background: radial-gradient(#233329, #233329);
   color: white;
   text-align: center;
   display: flex;
@@ -140,10 +140,12 @@ button{
   animation-name: jump;
   animation-duration: 3s;
   animation-iteration-count: infinite;
+  width: 200px;
+  height: 200px;
 }
 
 @keyframes jump {
   100%{
-    transform: perspective(400px) rotateY(360deg) rotateZ(180deg) rotateX(1440deg);
+    transform: perspective(400px) rotateY(180deg) rotateZ(180deg) rotateX(1440deg);
   }
   }
