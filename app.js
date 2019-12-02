@@ -8,81 +8,135 @@ let threeCards = 0;
 let thirdCard = 0;
 let highCard = 0;
 let lowCard = 0;
-
+let currentPlayer = 0;
+let player = [
+  {
+    name: 'PLAYER1',
+    coins: parseInt(document.querySelector('.player-score1').innerHTML),
+    coinHolder: document.querySelector('.player-score1')
+  },
+  {
+    name: 'PLAYER2',
+    coins: parseInt(document.querySelector('.player-score2').innerHTML),
+    coinHolder: document.querySelector('.player-score2')
+  }
+]
 
 window.onload = function () {
 
   let button = document.querySelector('.start')
   const betValue = document.querySelector('#betAmount')
-  const playerCoins = document.querySelector('.player-score')
-  const dealerCoins = document.querySelector('.dealer-score')
+  const player2Coins = document.querySelector('.player-score')
+  const player1Coins = document.querySelector('.player-score')
   let dealerMessage = document.querySelector('.dealer-message')
   let selectFooter = document.querySelector('.footer-container')
 
 
 
+
   let dealerSay = function (saySomething) {//dealer speaks
     // dealerSay.innerHTML = ""
-    dealerMessage.innerHTML = `<h3>${saySomething}</h3>`;
+    dealerMessage.innerHTML = saySomething;
     return
   }
 
+  let nextButton = function () {   //next button
+    let nextCard = document.createElement('button')
+    nextCard.className = "next-card"
+    nextCard.innerHTML = "Next cards"
+    selectFooter.appendChild(nextCard)
+  }
+
+  let clearButtons = function () {
+    while (document.querySelector('.button-bet')) { document.querySelector('.button-bet').remove() }
+    while (document.querySelector('.low-high') && document.querySelector('.high-low')) {
+      document.querySelector('.low-high').remove()
+      document.querySelector('.high-low').remove()
+    }
+    while (document.querySelector('.next-card')) { document.querySelector('.next-card').remove() }
+  }
 
 
-  const buttonYes = function () {                                 //button yes function
+  let winScenario = function () {                               //Winning Scenario
+    //player2Score = parseInt(player2Coins.innerHTML)
+    clearButtons()
+    player[currentPlayer].coins += parseInt(betValue.value)
+    console.log('This is your coins' + player[currentPlayer].coins)
+    //player2Score += parseInt(betValue.value)
+    currentPlayer === 0 ? player[1].coins -= parseInt(betValue.value) : player[0].coins -= parseInt(betValue.value)
+
+    player[0].coinHolder.innerHTML = player[0].coins
+    player[1].coinHolder.innerHTML = player[1].coins
+    unfold();
+    dealerSay(`Good guess &nbsp <b> ${player[currentPlayer].name}</b> &nbsp take &nbsp <b>${betValue.value}</b> &nbsp coins from your rival!`)
+    if (player[0].coinHolder.innerHTML <= 0 || player[1].coinHolder.innerHTML <= 0) { gameOver(); }
+    else {
+      nextButton();
+      document.querySelector('.next-card').addEventListener('click', loadCard)
+    }
+  }
+
+  let loseScenario = function () {                              //Lose scenario
+    //player2Score = parseInt(player2Coins.innerHTML)
+    //player1Score = parseInt(player1Coins.innerHTML)
+    clearButtons()
+    player[currentPlayer].coins = player[currentPlayer].coins - parseInt(betValue.value)
+    currentPlayer === 0 ? player[1].coins = player[1].coins + parseInt(betValue.value) : player[0].coins = player[0].coins + parseInt(betValue.value)
+
+    //player2Coins.innerHTML = player2Score
+    console.log(`${player[0].coins}  ${player[1].coins}`)
+    player[0].coinHolder.innerHTML = player[0].coins
+    player[1].coinHolder.innerHTML = player[1].coins
+    unfold();
+    dealerSay(`Oops! &nbsp <b>${player[currentPlayer].name}</b> &nbsp loses &nbsp <b> ${betValue.value}</b> &nbsp coins!`)
+    if (player[0].coinHolder.innerHTML <= 0 || player[1].coinHolder.innerHTML <= 0) { gameOver(); }
+    else {
+      nextButton();
+      document.querySelector('.next-card').addEventListener('click', loadCard)
+    }
+  }
+
+
+  const buttonYes = function () {          //button yes function
     selectFooter.innerHTML = ""
+
+    console.log(currentPlayer)
     console.log('this is the folded card ' + thirdCard)
     if (betValue.value) {
-      if (thirdCard < highCard && thirdCard > lowCard) {
-        let playerScore = parseInt(playerCoins.innerHTML)
-        let dealerScore = parseInt(dealerCoins.innerHTML)
-        playerScore += parseInt(betValue.value)
-        dealerScore -= betValue.value
-
-        playerCoins.innerHTML = playerScore
-        dealerCoins.innerHTML = dealerScore
-        unfold();
-        dealerSay(`Good guess.. You got my ${betValue.value} coins!`)
-        if (playerScore >= 200) { gameOver(); }
-        let nextCard = document.createElement('button')
-        nextCard.className = "next-card"
-        nextCard.innerHTML = "Next cards"
-        selectFooter.appendChild(nextCard)
-
-        document.querySelector('.next-card').addEventListener('click', loadCard)
+      if (currentPlayer === 0) {
+        if (thirdCard < highCard && thirdCard > lowCard) {
+          winScenario();
+          currentPlayer = 1;
+        }
+        else {
+          loseScenario();
+          currentPlayer = 1;
+        }
       }
       else {
-        let playerScore = parseInt(playerCoins.innerHTML)
-        let dealerScore = parseInt(dealerCoins.innerHTML)
-        playerScore -= parseInt(betValue.value)
-        dealerScore += parseInt(betValue.value)
-
-        playerCoins.innerHTML = playerScore
-        dealerCoins.innerHTML = dealerScore
-        unfold();
-        dealerSay(`Well well.. let me get that ${betValue.value} coins!`)
-        if (dealerScore >= 200) { gameOver(); }
-        let nextCard = document.createElement('button')
-        nextCard.className = "next-card"
-        nextCard.innerHTML = "Next cards"
-        selectFooter.appendChild(nextCard)
-
-        document.querySelector('.next-card').addEventListener('click', loadCard)
+        if (thirdCard < highCard && thirdCard > lowCard) {
+          winScenario();
+          currentPlayer = 0;
+        }
+        else {
+          loseScenario();
+          currentPlayer = 0;
+        }
       }
-      console.log(threeCards)
     } else {
       dealerSay("INPUT A NUMBER!!!")
-      buttonYN();
-      document.querySelector('.button-yes').addEventListener('click', buttonYes)
-      document.querySelector('.button-no').addEventListener('click', loadCard)
+      document.querySelector('.button-bet').addEventListener('click', buttonYes)
     }
 
   }
 
 
   let newGame = function () {
-    playerCoins.innerHTML = 100
-    dealerCoins.innerHTML = 100
+    for (let i = 0; i < 2; i++) {
+      player[i].coins = 100
+      player[i].coinHolder.innerHTML = 100
+    }
+
 
     document.querySelector('.start').style = "visibility: none"
     document.querySelector('.coin').style = "display: visible"
@@ -93,118 +147,85 @@ window.onload = function () {
     selectFooter.innerHTML = ""
 
     document.querySelector('.hidden').style = "display: none"
-    dealerSay('<h2>Let us play!</h2>')
+    dealerSay("Press the &nbsp <h3>START</h3> &nbspbutton")
 
   }
 
 
   let gameOver = function () {//checks if the game is over
-    if (parseInt(dealerCoins.innerHTML) <= 0) {
-      dealerSay("<h1>YOU WIN</h1>")
-      endingButtons()
-    }
-    else if (parseInt(playerCoins.innerHTML) <= 0) {
-      selectFooter.innerHTML = ""
-      console.log('YOU LOSE')
-      dealerSay("<h1>YOU LOSE</h1>")
-      endingButtons()
-    }
+    selectFooter.innerHTML = ""
+    clearButtons()
+    console.log('heyhey')
+    player[0].coinHolder.innerHTML <= 0 ? dealerSay(`<h1>${player[1].name} WINS</h1>`) : dealerSay(`<h1>${player[0].name} WINS!</h1>`)
+    endingButtons()
   }
 
   //game stops
 
   let endingButtons = function () {//ending game buttons
     console.log('YOU WIN!!!')
-
+    clearButtons()
     let playAgain = document.createElement('button')
     playAgain.className = "play-again"
     playAgain.innerHTML = "Main Menu"
     selectFooter.appendChild(playAgain)
     document.querySelector('.play-again').addEventListener('click', newGame)
-
-    document.querySelector('.next-card').innerHTML = ""
   }
 
 
-  let checkHL = function () {                                                           //check if high or low
+  let checkHL = function (currentPlayer) {                                                           //check if high or low
     if (betValue.value) {
-      if (event.target.innerHTML === 'High') {
-        console.log(`first card is ${highCard} second is ${lowCard} third card is ${thirdCard}`)
-        if (highCard < thirdCard) {
-          let playerScore = parseInt(playerCoins.innerHTML)
-          let dealerScore = parseInt(dealerCoins.innerHTML)
-          playerScore += parseInt(betValue.value)
-          dealerScore -= betValue.value
-
-          playerCoins.innerHTML = playerScore
-          dealerCoins.innerHTML = dealerScore
-          unfold();
-          dealerSay(`Good guess.. You got my ${betValue.value} coins!`)
-          if (playerScore >= 200) { gameOver(); }
-          let nextCard = document.createElement('button')
-          nextCard.className = "next-card"
-          nextCard.innerHTML = "Next cards"
-          selectFooter.appendChild(nextCard)
-
-          document.querySelector('.next-card').addEventListener('click', loadCard)
+      if (currentPlayer === 0) {
+        if (event.target.innerHTML === 'High') {
+          console.log(`first card is &nbsp <b>${highCard}</b> &nbsp second is &nbsp <b>${lowCard}</b> &nbsp third card is &nbsp <b>${thirdCard}</b>`)
+          if (highCard < thirdCard) {
+            winScenario()
+            dealerSay(`${player[1].name} you are next`)
+            currentPlayer = 1;
+          }
+          else if (highCard > thirdCard) {
+            loseScenario();
+            dealerSay(`${player[1].name} you are next`)
+            currentPlayer = 1;
+          }
         }
-        else if (highCard > thirdCard) {
-          let playerScore = parseInt(playerCoins.innerHTML)
-          let dealerScore = parseInt(dealerCoins.innerHTML)
-          playerScore -= parseInt(betValue.value)
-          dealerScore += parseInt(betValue.value)
 
-          playerCoins.innerHTML = playerScore
-          dealerCoins.innerHTML = dealerScore
-          unfold();
-          dealerSay(`Well well.. let me get that ${betValue.value} coins!`)
-          if (dealerScore >= 200) { gameOver(); }
-          let nextCard = document.createElement('button')
-          nextCard.className = "next-card"
-          nextCard.innerHTML = "Next cards"
-          selectFooter.appendChild(nextCard)
-
-          document.querySelector('.next-card').addEventListener('click', loadCard)
+        else if (event.target.innerHTML === 'Low') {
+          if (highCard > thirdCard) {
+            winScenario()
+            dealerSay(`${player[1].name} you are next`)
+            currentPlayer = 1;
+          }
+          else {
+            loseScenario();
+            dealerSay(`${player[1].name} you are next`)
+            currentPlayer = 1;
+          }
         }
       }
-
-      else if (event.target.innerHTML === 'Low') {
-        if (highCard > thirdCard) {
-          console.log('You chose low')
-          let playerScore = parseInt(playerCoins.innerHTML)
-          let dealerScore = parseInt(dealerCoins.innerHTML)
-          playerScore += parseInt(betValue.value)
-          dealerScore -= betValue.value
-
-          playerCoins.innerHTML = playerScore
-          dealerCoins.innerHTML = dealerScore
-          unfold();
-          dealerSay(`Good guess.. You got my ${betValue.value} coins!`)
-          if (playerScore >= 200) { gameOver(); }
-          let nextCard = document.createElement('button')
-          nextCard.className = "next-card"
-          nextCard.innerHTML = "Next cards"
-          selectFooter.appendChild(nextCard)
-
-          document.querySelector('.next-card').addEventListener('click', loadCard)
+      else {
+        if (event.target.innerHTML === 'High') {
+          console.log(`first card is <b>${highCard}</b> second is <b>${lowCard}</b> third card is <b>${thirdCard}</b>`)
+          if (highCard < thirdCard) {
+            winScenario()
+            dealerSay(`${player[0].name} you are next`)
+            currentPlayer = 0;
+          }
+          else if (highCard > thirdCard) {
+            loseScenario();
+            currentPlayer = 0;
+          }
         }
-        else {
-          let playerScore = parseInt(playerCoins.innerHTML)
-          let dealerScore = parseInt(dealerCoins.innerHTML)
-          playerScore -= parseInt(betValue.value)
-          dealerScore += parseInt(betValue.value)
 
-          playerCoins.innerHTML = playerScore
-          dealerCoins.innerHTML = dealerScore
-          unfold();
-          dealerSay(`Well well.. let me get that ${betValue.value} coins!`)
-          if (dealerScore >= 200) { gameOver(); }
-          let nextCard = document.createElement('button')
-          nextCard.className = "next-card"
-          nextCard.innerHTML = "Next cards"
-          selectFooter.appendChild(nextCard)
-
-          document.querySelector('.next-card').addEventListener('click', loadCard)
+        else if (event.target.innerHTML === 'Low') {
+          if (highCard > thirdCard) {
+            winScenario()
+            currentPlayer = 0;
+          }
+          else {
+            loseScenario();
+            currentPlayer = 0;
+          }
         }
       }
     }
@@ -221,26 +242,30 @@ window.onload = function () {
 
     selectFooter.innerHTML = ""
 
-    dealerSay(`You draw same card, now you have to guess whether the third card is Higher than ${highCard} or Lower`)
+    dealerSay(`You draw same card &nbsp <b>${player[currentPlayer].name}</b>, &nbspnow you have to guess whether the third card is Higher than &nbsp <b>${highCard}</b> &nbsp or Lower`)
     let highButton = document.createElement('button')
     highButton.className = 'high-low'
     highButton.innerHTML = 'High'
-    selectFooter.appendChild(highButton)
+    document.querySelector('.bottom-body').appendChild(highButton)
     document.querySelector('.high-low').addEventListener('click', checkHL)
+
 
     let lowButton = document.createElement('button')
     lowButton.className = 'low-high'
     lowButton.innerHTML = 'Low'
-    selectFooter.appendChild(lowButton)
+    document.querySelector('.bottom-body').appendChild(lowButton)
     document.querySelector('.low-high').addEventListener('click', checkHL)
   }
 
-  dealerSay("<h3>Hey let us play!!!</h3>")
+  dealerSay("Press the &nbsp <h3>START</h3> &nbspbutton")
   button.addEventListener('click', loadCard)
 
 
   let unfold = function () {//unfolds the card
 
+    while (document.querySelector('.button-bet')) {
+      document.querySelector('.button-bet').remove()
+    }
     let foldedCard = document.getElementById('folded-card')
     foldedCard.remove();
 
@@ -259,16 +284,13 @@ window.onload = function () {
 
   let buttonYN = function () {     //create YES or NO button
     selectFooter.innerHTML = ""
+
+    console.log('hey')
     // 
     const footerButtonY = document.createElement('button')
-    footerButtonY.className = 'button-yes'
-    footerButtonY.innerHTML = 'YES'
-    selectFooter.appendChild(footerButtonY)
-
-    const footerButtonN = document.createElement('button')
-    footerButtonN.className = 'button-no'
-    footerButtonN.innerHTML = 'NO'
-    selectFooter.appendChild(footerButtonN)
+    footerButtonY.className = 'button-bet'
+    footerButtonY.innerHTML = 'BET'
+    document.querySelector('.bottom-body').appendChild(footerButtonY)
   }
 
 
@@ -279,11 +301,9 @@ window.onload = function () {
 
     const response = await axios.get(`${deck}`)
 
-
+    clearButtons()
     console.log(response)
-
     document.querySelector('.card-list').innerHTML = ""
-    selectFooter.innerHTML = ""
     dealerMessage.innerHTML = ""
     document.querySelector('.coin').style.display = 'none'
     button.style.visibility = "hidden";
@@ -312,7 +332,8 @@ window.onload = function () {
       }
 
     }
-    console.log(card)
+
+
 
 
     //sunday november 24 pops the last card and insert it into the thirdCard
@@ -350,7 +371,7 @@ window.onload = function () {
 
     betValue.style.display = 'block'
 
-
+    console.log(player[0].coins)
 
     if (highCard === lowCard) {
       highLowButton();
@@ -358,19 +379,12 @@ window.onload = function () {
 
     else {
       buttonYN();
-      dealerSay(`So do you think the third card is in between ${threeCards[0].value} and ${threeCards[1].value}?`);
-      document.querySelector('.button-yes').addEventListener('click', buttonYes)
-      document.querySelector('.button-no').addEventListener('click', loadCard)
+      dealerSay(`<b>${player[currentPlayer].name}</b> &nbsp is 3rd card in between &nbsp <b>${threeCards[0].value}</b>  &nbsp and &nbsp  <b>${threeCards[1].value}</b>? Place your bet`);
+      document.querySelector('.button-bet').addEventListener('click', buttonYes)
 
       //checks if third card is in between
     }
-
-
-
     button.addEventListener('click', loadCard)
-
-
-
   }
 
 }

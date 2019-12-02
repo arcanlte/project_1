@@ -5,26 +5,38 @@
   <title>In Between Card Game</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Vast+Shadow&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <header>
-    <span class='text1'>In Between Card Game</span>
+    <span class='text1'>In-Between</span>
     <span class='text2'>Let's Play!</span>
   </header>
 
 
-  <div class="flexContainer">
-    <div class="player-score">100</div>
-    <button class="start">START</button>
-    <div class="dealer-score">100</div>
+  <div class="player-names">
+    <div class='player-name1'>PLAYER 1</div>
+    <div class='player-name2'>PLAYER 2</div>
   </div>
+
+
+  <div class="flexContainer">
+    <div class="player-score1">100</div>
+    <div class="player-score2">100</div>
+  </div>
+
+  <button class="start">START</button>
+
 
 
   <div class="card-container">
     <img src="image/coin.png" class="coin" display="">
     <div class="card-list"></div>
-    <input class="hidden" type="text" placeholder="bet amount" id="betAmount" maxlength="4" size="20">
+  </div>
+
+  <div class='bottom-body'>
+    <input class="hidden" type="text" placeholder="bet amount" id="betAmount" maxlength="3" size="20">
   </div>
 
 
