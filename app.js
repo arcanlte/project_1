@@ -34,20 +34,19 @@ window.onload = function () {
 
 
 
-  let dealerSay = function (saySomething) {//dealer speaks
-    // dealerSay.innerHTML = ""
+  let dealerSay = function (saySomething) {                                                   //dealer speaks
     dealerMessage.innerHTML = saySomething;
     return
   }
 
-  let nextButton = function () {   //next button
+  let nextButton = function () {                                                              //next button
     let nextCard = document.createElement('button')
     nextCard.className = "next-card"
     nextCard.innerHTML = "Next cards"
     selectFooter.appendChild(nextCard)
   }
 
-  let clearButtons = function () {
+  let clearButtons = function () {                                                            //clears buttons
     while (document.querySelector('.button-bet')) { document.querySelector('.button-bet').remove() }
     while (document.querySelector('.low-high') && document.querySelector('.high-low')) {
       document.querySelector('.low-high').remove()
@@ -57,12 +56,9 @@ window.onload = function () {
   }
 
 
-  let winScenario = function () {                               //Winning Scenario
-    //player2Score = parseInt(player2Coins.innerHTML)
+  let winScenario = function () {                                                             //win scenario
     clearButtons()
     player[currentPlayer].coins += parseInt(betValue.value)
-    console.log('This is your coins' + player[currentPlayer].coins)
-    //player2Score += parseInt(betValue.value)
     currentPlayer === 0 ? player[1].coins -= parseInt(betValue.value) : player[0].coins -= parseInt(betValue.value)
 
     player[0].coinHolder.innerHTML = player[0].coins
@@ -76,14 +72,10 @@ window.onload = function () {
     }
   }
 
-  let loseScenario = function () {                              //Lose scenario
-    //player2Score = parseInt(player2Coins.innerHTML)
-    //player1Score = parseInt(player1Coins.innerHTML)
+  let loseScenario = function () {                                                          //Lose scenario
     clearButtons()
     player[currentPlayer].coins = player[currentPlayer].coins - parseInt(betValue.value)
     currentPlayer === 0 ? player[1].coins = player[1].coins + parseInt(betValue.value) : player[0].coins = player[0].coins + parseInt(betValue.value)
-
-    //player2Coins.innerHTML = player2Score
     console.log(`${player[0].coins}  ${player[1].coins}`)
     player[0].coinHolder.innerHTML = player[0].coins
     player[1].coinHolder.innerHTML = player[1].coins
@@ -97,11 +89,8 @@ window.onload = function () {
   }
 
 
-  const buttonYes = function () {          //button yes function
+  const buttonYes = function () {                                                       //bet button
     selectFooter.innerHTML = ""
-
-    console.log(currentPlayer)
-    console.log('this is the folded card ' + thirdCard)
     if (betValue.value) {
       if (currentPlayer === 0) {
         if (thirdCard < highCard && thirdCard > lowCard) {
@@ -131,7 +120,7 @@ window.onload = function () {
   }
 
 
-  let newGame = function () {
+  let newGame = function () {                                                      //shows after game ends
     for (let i = 0; i < 2; i++) {
       player[i].coins = 100
       player[i].coinHolder.innerHTML = 100
@@ -152,7 +141,7 @@ window.onload = function () {
   }
 
 
-  let gameOver = function () {//checks if the game is over
+  let gameOver = function () {                                                  //checks if the game is over
     selectFooter.innerHTML = ""
     clearButtons()
     console.log('heyhey')
@@ -160,9 +149,8 @@ window.onload = function () {
     endingButtons()
   }
 
-  //game stops
 
-  let endingButtons = function () {//ending game buttons
+  let endingButtons = function () {                                                  //creates main menu
     console.log('YOU WIN!!!')
     clearButtons()
     let playAgain = document.createElement('button')
@@ -173,7 +161,7 @@ window.onload = function () {
   }
 
 
-  let checkHL = function (currentPlayer) {                                                           //check if high or low
+  let checkHL = function (currentPlayer) {                                              //check if high or low
     if (betValue.value) {
       if (currentPlayer === 0) {
         if (event.target.innerHTML === 'High') {
@@ -238,7 +226,7 @@ window.onload = function () {
 
 
 
-  let highLowButton = function () {
+  let highLowButton = function () {                                           //creates H L button
 
     selectFooter.innerHTML = ""
 
@@ -261,7 +249,7 @@ window.onload = function () {
   button.addEventListener('click', loadCard)
 
 
-  let unfold = function () {//unfolds the card
+  let unfold = function () {                                                          //unfolds the card
 
     while (document.querySelector('.button-bet')) {
       document.querySelector('.button-bet').remove()
@@ -282,7 +270,7 @@ window.onload = function () {
   }
 
 
-  let buttonYN = function () {     //create YES or NO button
+  let buttonYN = function () {                                                  //creates bet button
     selectFooter.innerHTML = ""
 
     console.log('hey')
@@ -295,8 +283,7 @@ window.onload = function () {
 
 
 
-  async function loadCard() {//loads the cards and resets the game
-    //stops the page from reloading
+  async function loadCard() {                                           //loads the cards and resets the game
     event.preventDefault();
 
     const response = await axios.get(`${deck}`)
@@ -307,10 +294,7 @@ window.onload = function () {
     dealerMessage.innerHTML = ""
     document.querySelector('.coin').style.display = 'none'
     button.style.visibility = "hidden";
-
-    //sat nov23 converts A J Q K into number values
     card = [];
-
     threeCards = response.data.cards;
 
     for (let i = 0; i < threeCards.length; i++) {
@@ -332,16 +316,10 @@ window.onload = function () {
       }
 
     }
-
-
-
-
-    //sunday november 24 pops the last card and insert it into the thirdCard
     //gets the highest and lowest card then store them in an array
     thirdCard = card.pop();
     highCard = Math.max(card[0], card[1]);
     lowCard = Math.min(card[0], card[1])
-
 
     //displays card images
     for (let i = 0; i < 2; i++) {
@@ -375,7 +353,7 @@ window.onload = function () {
 
     if (highCard === lowCard) {
       highLowButton();
-    }                                        //checks if two cards are equal
+    }                                                                         //checks if two cards are equal
 
     else {
       buttonYN();
