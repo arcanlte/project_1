@@ -259,7 +259,7 @@ input{
     }
     50%{
       color:violet;
-      letter-spacing: 25px;
+      letter-spacing: 14px;
     }
     75%{
       color: yellow;
@@ -271,60 +271,5 @@ input{
   }
 
 
+
   
-  @media screen and (min-width:600px) {
-    body{
-      height: 2200px;
-    }
-    header{
-      height: 500px;
-    }
-    .text1{
-      margin-bottom: 70px;
-    }
-    footer{
-      height: 200px;
-    }
-    .dealer-message{
-      font-size: 16pt;
-    }
-    .player-names{
-      margin-top: 100px;
-      font-size: 32pt;
-    }
-    .flexContainer{
-      margin-top: 50px;
-      font-size: 48pt;
-      margin-bottom: 50px;
-    }
-    .card-container{
-      margin: 0 10px 30px 30px;
-    }
-
-    .card-image{
-      width: 260px;
-      height: 420px;
-    }
-
-    input{
-      height: 60px;
-      font-size: 20pt;
-    }
-    .button-bet{
-      height: 60px;
-      width: 120px;
-      font-size: 20pt;
-    }
-    .next-card{
-      height: 60px;
-      width: 200px;
-      font-size: 20pt;
-    }
-
-    .start{
-      height: 150px;
-      width: 300px;
-      font-size: 32pt;
-    }
-
-  }
